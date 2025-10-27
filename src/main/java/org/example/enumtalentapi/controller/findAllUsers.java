@@ -18,4 +18,7 @@ public class findAllUsers {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+
+
 }
