@@ -1,4 +1,4 @@
-package org.example.enumtalentapi.dto;
+package org.example.enumtalentapi.dto.Request;
 
 import lombok.Data;
 import java.util.List;

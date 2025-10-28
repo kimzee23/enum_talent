@@ -1,5 +1,4 @@
-import {ProfileProvider} from "@/context/ProfileContext";
-
+import { ProfileProvider } from '@/contexts/ProfileContext'
 
 export default function DashboardLayout({
                                             children,

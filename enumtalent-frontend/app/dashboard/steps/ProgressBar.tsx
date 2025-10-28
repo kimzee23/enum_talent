@@ -1,6 +1,6 @@
 'use client'
 
-import { useProfile } from '@/context/ProfileContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 const steps = [
     { number: 1, label: 'Personal Info' },

@@ -1,9 +1,19 @@
 'use client'
 
-import { useProfile } from '@/context/ProfileContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 export default function ProfileCompletion() {
     const { profileData } = useProfile()
+
+    const getSafeValue = (value: string | null | undefined): string => {
+        return value || ''
+    }
+    const getSafeSkills = (): string[] => {
+        return profileData.skills || []
+    }
+    const getSafePreferredRoles = (): string[] => {
+        return profileData.preferredRoles || []
+    }
 
     const calculateCompletion = () => {
         const requiredFields = [
@@ -15,13 +25,21 @@ export default function ProfileCompletion() {
 
         const completedFields = requiredFields.filter(field => {
             const value = profileData[field as keyof typeof profileData]
+
             if (Array.isArray(value)) {
                 return value.length > 0
             }
+
+            if (field === 'skills' || field === 'preferredRoles') {
+                const arrayValue = field === 'skills' ? getSafeSkills() : getSafePreferredRoles()
+                return arrayValue.length > 0
+            }
+
             if (field === 'graduationYear') {
                 return value !== null && value !== 0
             }
-            return Boolean(value)
+
+            return Boolean(getSafeValue(value as string))
         })
 
         return Math.round((completedFields.length / requiredFields.length) * 100)
@@ -39,22 +57,24 @@ export default function ProfileCompletion() {
 
     const getMissingFields = () => {
         const missing = []
-        if (!profileData.firstName || !profileData.lastName) missing.push('Name')
-        if (!profileData.phone) missing.push('Phone')
-        if (!profileData.location) missing.push('Location')
-        if (!profileData.bio) missing.push('Bio')
-        if (!profileData.headline) missing.push('Headline')
-        if (profileData.skills.length === 0) missing.push('Skills')
-        if (!profileData.experienceLevel) missing.push('Experience Level')
-        if (!profileData.highestDegree) missing.push('Highest Degree')
-        if (!profileData.institution) missing.push('Institution')
-        if (!profileData.fieldOfStudy) missing.push('Field of Study')
+
+        // Use safe getters for all fields
+        if (!getSafeValue(profileData.firstName) || !getSafeValue(profileData.lastName)) missing.push('Name')
+        if (!getSafeValue(profileData.phone)) missing.push('Phone')
+        if (!getSafeValue(profileData.location)) missing.push('Location')
+        if (!getSafeValue(profileData.bio)) missing.push('Bio')
+        if (!getSafeValue(profileData.headline)) missing.push('Headline')
+        if (getSafeSkills().length === 0) missing.push('Skills')
+        if (!getSafeValue(profileData.experienceLevel)) missing.push('Experience Level')
+        if (!getSafeValue(profileData.highestDegree)) missing.push('Highest Degree')
+        if (!getSafeValue(profileData.institution)) missing.push('Institution')
+        if (!getSafeValue(profileData.fieldOfStudy)) missing.push('Field of Study')
         if (!profileData.graduationYear) missing.push('Graduation Year')
-        if (!profileData.resumeUrl) missing.push('Resume')
-        if (profileData.preferredRoles.length === 0) missing.push('Preferred Roles')
-        if (!profileData.workMode) missing.push('Work Mode')
-        if (!profileData.salaryExpectation) missing.push('Salary Expectation')
-        if (!profileData.locationPreference) missing.push('Location Preference')
+        if (!getSafeValue(profileData.resumeUrl)) missing.push('Resume')
+        if (getSafePreferredRoles().length === 0) missing.push('Preferred Roles')
+        if (!getSafeValue(profileData.workMode)) missing.push('Work Mode')
+        if (!getSafeValue(profileData.salaryExpectation)) missing.push('Salary Expectation')
+        if (!getSafeValue(profileData.locationPreference)) missing.push('Location Preference')
 
         return missing
     }
@@ -106,7 +126,7 @@ export default function ProfileCompletion() {
                     {completion < 70 && (
                         <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
                             <p className="text-sm text-yellow-800">
-                                 <strong>Tip:</strong> Complete your profile to increase your chances of getting hired by 3x!
+                                💡 <strong>Tip:</strong> Complete your profile to increase your chances of getting hired by 3x!
                             </p>
                         </div>
                     )}

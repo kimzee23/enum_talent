@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useProfile } from '@/context/ProfileContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 const preferredRoles = [
     'Frontend Developer',
@@ -32,22 +32,35 @@ export default function PreferencesStep() {
     const { profileData, updateProfileData, prevStep, isSubmitting, submitProfile } = useProfile()
     const [newRole, setNewRole] = useState('')
 
+    // Safe value getter to handle null values
+    const getSafeValue = (value: string | null | undefined): string => {
+        return value || ''
+    }
+
+    // Safe array getter
+    const getSafePreferredRoles = (): string[] => {
+        return profileData.preferredRoles || []
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         await submitProfile()
-        // You might want to redirect to profile page or show success message
     }
 
-    const addPreferredRole = () => {
-        if (newRole && !profileData.preferredRoles.includes(newRole)) {
-            updateProfileData({ preferredRoles: [...profileData.preferredRoles, newRole] })
+    const addPreferredRole = (role?: string) => {
+        const roleToAdd = role || newRole
+        const currentRoles = getSafePreferredRoles()
+
+        if (roleToAdd && !currentRoles.includes(roleToAdd)) {
+            updateProfileData({ preferredRoles: [...currentRoles, roleToAdd] })
             setNewRole('')
         }
     }
 
     const removePreferredRole = (roleToRemove: string) => {
+        const currentRoles = getSafePreferredRoles()
         updateProfileData({
-            preferredRoles: profileData.preferredRoles.filter(role => role !== roleToRemove)
+            preferredRoles: currentRoles.filter(role => role !== roleToRemove)
         })
     }
 
@@ -66,12 +79,12 @@ export default function PreferencesStep() {
                         value={newRole}
                         onChange={(e) => setNewRole(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addPreferredRole())}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                         placeholder="Add a preferred role"
                     />
                     <button
                         type="button"
-                        onClick={addPreferredRole}
+                        onClick={() => addPreferredRole()}
                         className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
                     >
                         Add
@@ -79,9 +92,9 @@ export default function PreferencesStep() {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                    {profileData.preferredRoles.map(role => (
+                    {getSafePreferredRoles().map((role, index) => (
                         <span
-                            key={role}
+                            key={index}
                             className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800"
                         >
               {role}
@@ -103,12 +116,10 @@ export default function PreferencesStep() {
                             <button
                                 key={role}
                                 type="button"
-                                onClick={() => !profileData.preferredRoles.includes(role) && updateProfileData({
-                                    preferredRoles: [...profileData.preferredRoles, role]
-                                })}
-                                disabled={profileData.preferredRoles.includes(role)}
+                                onClick={() => addPreferredRole(role)}
+                                disabled={getSafePreferredRoles().includes(role)}
                                 className={`px-2 py-1 text-xs rounded ${
-                                    profileData.preferredRoles.includes(role)
+                                    getSafePreferredRoles().includes(role)
                                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
@@ -128,9 +139,9 @@ export default function PreferencesStep() {
                     </label>
                     <select
                         id="workMode"
-                        value={profileData.workMode}
+                        value={getSafeValue(profileData.workMode)}
                         onChange={(e) => updateProfileData({ workMode: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                         required
                     >
                         <option value="">Select work mode</option>
@@ -146,9 +157,9 @@ export default function PreferencesStep() {
                     </label>
                     <select
                         id="salaryExpectation"
-                        value={profileData.salaryExpectation}
+                        value={getSafeValue(profileData.salaryExpectation)}
                         onChange={(e) => updateProfileData({ salaryExpectation: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                         required
                     >
                         <option value="">Select salary range</option>
@@ -167,9 +178,9 @@ export default function PreferencesStep() {
                 <input
                     type="text"
                     id="locationPreference"
-                    value={profileData.locationPreference}
+                    value={getSafeValue(profileData.locationPreference)}
                     onChange={(e) => updateProfileData({ locationPreference: e.target.value })}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     placeholder="e.g., Lagos, Remote, Abuja, etc."
                     required
                 />
@@ -180,7 +191,7 @@ export default function PreferencesStep() {
 
             {/* Summary */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <h3 className="text-lg font-medium text-blue-900 mb-2">Almost Done! 🎉</h3>
+                <h3 className="text-lg font-medium text-blue-900 mb-2">Almost Done! </h3>
                 <p className="text-blue-800">
                     Your profile is looking great! Once you submit, employers will be able to find you
                     and you can start applying to jobs that match your preferences.

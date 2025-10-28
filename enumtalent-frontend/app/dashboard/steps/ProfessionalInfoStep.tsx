@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useProfile } from '@/context/ProfileContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 const experienceLevels = ['Entry-level', 'Mid-level', 'Senior', 'Lead', 'Executive']
 const skillsList = ['Java', 'Spring Boot', 'MongoDB', 'React', 'Node.js', 'Python', 'JavaScript', 'TypeScript', 'AWS', 'Docker']
@@ -15,16 +15,29 @@ export default function ProfessionalInfoStep() {
         nextStep()
     }
 
-    const addSkill = () => {
-        if (newSkill && !profileData.skills.includes(newSkill)) {
-            updateProfileData({ skills: [...profileData.skills, newSkill] })
+    const getSafeValue = (value: string | null | undefined): string => {
+        return value || ''
+    }
+
+    // Safe skills array getter
+    const getSafeSkills = (): string[] => {
+        return profileData.skills || []
+    }
+
+    const addSkill = (skill?: string) => {
+        const skillToAdd = skill || newSkill
+        const currentSkills = getSafeSkills()
+
+        if (skillToAdd && !currentSkills.includes(skillToAdd)) {
+            updateProfileData({ skills: [...currentSkills, skillToAdd] })
             setNewSkill('')
         }
     }
 
     const removeSkill = (skillToRemove: string) => {
+        const currentSkills = getSafeSkills()
         updateProfileData({
-            skills: profileData.skills.filter(skill => skill !== skillToRemove)
+            skills: currentSkills.filter(skill => skill !== skillToRemove)
         })
     }
 
@@ -39,9 +52,9 @@ export default function ProfessionalInfoStep() {
                 <input
                     type="text"
                     id="headline"
-                    value={profileData.headline}
+                    value={getSafeValue(profileData.headline)}
                     onChange={(e) => updateProfileData({ headline: e.target.value })}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     placeholder="e.g., Full-Stack Developer"
                     required
                 />
@@ -53,9 +66,9 @@ export default function ProfessionalInfoStep() {
                 </label>
                 <select
                     id="experienceLevel"
-                    value={profileData.experienceLevel}
+                    value={getSafeValue(profileData.experienceLevel)}
                     onChange={(e) => updateProfileData({ experienceLevel: e.target.value })}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                     required
                 >
                     <option value="">Select experience level</option>
@@ -73,9 +86,9 @@ export default function ProfessionalInfoStep() {
                     <input
                         type="text"
                         id="currentPosition"
-                        value={profileData.currentPosition}
+                        value={getSafeValue(profileData.currentPosition)}
                         onChange={(e) => updateProfileData({ currentPosition: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     />
                 </div>
 
@@ -86,9 +99,9 @@ export default function ProfessionalInfoStep() {
                     <input
                         type="text"
                         id="company"
-                        value={profileData.company}
+                        value={getSafeValue(profileData.company)}
                         onChange={(e) => updateProfileData({ company: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     />
                 </div>
             </div>
@@ -103,47 +116,48 @@ export default function ProfessionalInfoStep() {
                         value={newSkill}
                         onChange={(e) => setNewSkill(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addSkill())}
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                         placeholder="Add a skill"
                     />
                     <button
                         type="button"
-                        onClick={addSkill}
+                        onClick={() => addSkill()}
                         className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300"
                     >
                         Add
                     </button>
                 </div>
 
+                {/* Skills display */}
                 <div className="flex flex-wrap gap-2">
-                    {profileData.skills.map(skill => (
+                    {getSafeSkills().map((skill, index) => (
                         <span
-                            key={skill}
+                            key={index}
                             className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
                         >
-              {skill}
+                            {skill}
                             <button
                                 type="button"
                                 onClick={() => removeSkill(skill)}
                                 className="ml-2 text-blue-600 hover:text-blue-800"
                             >
-                ×
-              </button>
-            </span>
+                                ×
+                            </button>
+                        </span>
                     ))}
                 </div>
 
                 <div className="mt-2">
-                    <p className="text-sm text-gray-600">Suggested skills:</p>
-                    <div className="flex flex-wrap gap-1 mt-1">
+                    <p className="text-sm text-gray-600 mb-2">Suggested skills:</p>
+                    <div className="flex flex-wrap gap-1">
                         {skillsList.map(skill => (
                             <button
                                 key={skill}
                                 type="button"
-                                onClick={() => !profileData.skills.includes(skill) && addSkill(skill)}
-                                disabled={profileData.skills.includes(skill)}
+                                onClick={() => addSkill(skill)}
+                                disabled={getSafeSkills().includes(skill)}
                                 className={`px-2 py-1 text-xs rounded ${
-                                    profileData.skills.includes(skill)
+                                    getSafeSkills().includes(skill)
                                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}

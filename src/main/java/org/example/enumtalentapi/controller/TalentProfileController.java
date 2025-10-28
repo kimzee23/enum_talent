@@ -1,9 +1,9 @@
 package org.example.enumtalentapi.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.enumtalentapi.dto.ApiResponse;
-import org.example.enumtalentapi.dto.TalentProfileRequest;
-import org.example.enumtalentapi.dto.TalentProfileResponse;
+import org.example.enumtalentapi.dto.Response.ApiResponse;
+import org.example.enumtalentapi.dto.Request.TalentProfileRequest;
+import org.example.enumtalentapi.dto.Response.TalentProfileResponse;
 import org.example.enumtalentapi.exception.CustomException;
 import org.example.enumtalentapi.service.TalentProfileService;
 import org.springframework.http.ResponseEntity;

@@ -44,5 +44,13 @@ export const profileAPI = {
     getProfile: (userId) => api.get(`/profile/talent/me?userId=${userId}`),
     createOrUpdateProfile: (userId, data) => api.post(`/profile/talent/${userId}`, data),
 };
+export const jobsAPI = {
+    getAllJobs: (filters = {}) => api.get('/jobs', { params: filters }),
+    getJobById: (jobId) => api.get(`/jobs/${jobId}`),
+    getJobsBySkills: (skills) => api.get('/jobs/skills', { params: { skills } }),
+    createJob: (userId, data) => api.post('/jobs', data, { params: { userId } }),
+    updateJob: (jobId, userId, data) => api.put(`/jobs/${jobId}`, data, { params: { userId } }),
+    deleteJob: (jobId, userId) => api.delete(`/jobs/${jobId}`, { params: { userId } }),
+};
 
 export default api;

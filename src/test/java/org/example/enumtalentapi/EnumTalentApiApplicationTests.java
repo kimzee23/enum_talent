@@ -2,8 +2,8 @@ package org.example.enumtalentapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.enumtalentapi.controller.TalentProfileController;
-import org.example.enumtalentapi.dto.TalentProfileRequest;
-import org.example.enumtalentapi.dto.TalentProfileResponse;
+import org.example.enumtalentapi.dto.Request.TalentProfileRequest;
+import org.example.enumtalentapi.dto.Response.TalentProfileResponse;
 import org.example.enumtalentapi.exception.CustomException;
 import org.example.enumtalentapi.service.TalentProfileService;
 import org.junit.jupiter.api.BeforeEach;

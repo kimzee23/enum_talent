@@ -1,12 +1,13 @@
 'use client'
 
-import { useProfile } from '@/context/ProfileContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 const degrees = [
     'High School',
     'Associate Degree',
     'Bachelor of Science',
     'Bachelor of Arts',
+    "Bachelor",
     'Master of Science',
     'Master of Arts',
     'PhD',
@@ -33,6 +34,11 @@ export default function EducationStep() {
     const currentYear = new Date().getFullYear()
     const graduationYears = Array.from({ length: 30 }, (_, i) => currentYear - i)
 
+    // Safe value getter to handle null values
+    const getSafeValue = (value: string | null | undefined): string => {
+        return value || ''
+    }
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         nextStep()
@@ -49,9 +55,9 @@ export default function EducationStep() {
                     </label>
                     <select
                         id="highestDegree"
-                        value={profileData.highestDegree}
+                        value={getSafeValue(profileData.highestDegree)}
                         onChange={(e) => updateProfileData({ highestDegree: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                         required
                     >
                         <option value="">Select highest degree</option>
@@ -68,9 +74,9 @@ export default function EducationStep() {
                     <input
                         type="text"
                         id="institution"
-                        value={profileData.institution}
+                        value={getSafeValue(profileData.institution)}
                         onChange={(e) => updateProfileData({ institution: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                         placeholder="e.g., University of Lagos"
                         required
                     />
@@ -84,9 +90,9 @@ export default function EducationStep() {
                     </label>
                     <select
                         id="fieldOfStudy"
-                        value={profileData.fieldOfStudy}
+                        value={getSafeValue(profileData.fieldOfStudy)}
                         onChange={(e) => updateProfileData({ fieldOfStudy: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                         required
                     >
                         <option value="">Select field of study</option>
@@ -104,7 +110,7 @@ export default function EducationStep() {
                         id="graduationYear"
                         value={profileData.graduationYear || ''}
                         onChange={(e) => updateProfileData({ graduationYear: e.target.value ? parseInt(e.target.value) : null })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"
                         required
                     >
                         <option value="">Select graduation year</option>
@@ -122,9 +128,9 @@ export default function EducationStep() {
                 <input
                     type="url"
                     id="transcript"
-                    value={profileData.transcript}
+                    value={getSafeValue(profileData.transcript)}
                     onChange={(e) => updateProfileData({ transcript: e.target.value })}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     placeholder="https://example.com/transcript.pdf"
                 />
                 <p className="mt-1 text-sm text-gray-500">

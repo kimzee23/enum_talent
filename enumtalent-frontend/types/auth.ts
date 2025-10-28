@@ -7,6 +7,7 @@ export interface AuthResponse {
     success: boolean
     data?: any
     error?: string
+    redirectTo?: string
 }
 
 export interface AuthContextType {

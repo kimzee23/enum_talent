@@ -1,7 +1,7 @@
 package org.example.enumtalentapi.service;
 
-import org.example.enumtalentapi.dto.LoginRequest;
-import org.example.enumtalentapi.dto.SignupRequest;
+import org.example.enumtalentapi.dto.Request.LoginRequest;
+import org.example.enumtalentapi.dto.Request.SignupRequest;
 import org.springframework.stereotype.Service;
 
 @Service

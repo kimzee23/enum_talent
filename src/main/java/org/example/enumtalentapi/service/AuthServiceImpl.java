@@ -2,8 +2,8 @@ package org.example.enumtalentapi.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.enumtalentapi.dto.LoginRequest;
-import org.example.enumtalentapi.dto.SignupRequest;
+import org.example.enumtalentapi.dto.Request.LoginRequest;
+import org.example.enumtalentapi.dto.Request.SignupRequest;
 import org.example.enumtalentapi.entity.User;
 import org.example.enumtalentapi.entity.VerificationToken;
 import org.example.enumtalentapi.exception.CustomException;
@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new CustomException("INVALID_CREDENTIALS"));
 
         if (!user.isVerified()) {
-            throw new CustomException("EMAIL_NOT_VERIFIED");
+            throw new CustomException("EMAIL NOT VERIFIED");
         }
 
         boolean matches = encoder.matches(request.getPassword(), user.getPassword());

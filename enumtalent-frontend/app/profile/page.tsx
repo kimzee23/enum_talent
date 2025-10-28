@@ -3,7 +3,7 @@ import ProfileHeader from '@/components/profile/ProfileHeader'
 import ProfileStats from '@/components/profile/ProfileStats'
 import ProfileForm from '@/components/profile/ProfileForm'
 import ProfileCompletion from '@/components/profile/ProfileCompletion'
-import {ProfileProvider} from "@/context/ProfileContext";
+import {ProfileProvider} from "@/contexts/ProfileContext";
 
 export default function ProfilePage() {
     return (
@@ -18,11 +18,9 @@ export default function ProfilePage() {
                             <ProfileForm />
                         </div>
 
-                        {/* Sidebar */}
                         <div className="space-y-6">
                             <ProfileCompletion />
 
-                            {/* Quick Actions */}
                             <div className="bg-white shadow rounded-lg p-6">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                                 <div className="space-y-3">

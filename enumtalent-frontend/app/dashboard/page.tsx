@@ -1,8 +1,6 @@
 'use client'
 
-import { useProfile } from '@/context/ProfileContext'
-
-
+import {ProfileProvider, useProfile} from '@/contexts/ProfileContext'
 import PreferencesStep from '@/app/dashboard/steps/PreferencesStep'
 import ProgressBar from '@/app/dashboard/ProgressBar'
 import PersonalInfoStep from "@/app/dashboard/steps/PersonalInfoStep";

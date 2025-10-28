@@ -1,4 +1,4 @@
-package org.example.enumtalentapi.dto;
+package org.example.enumtalentapi.dto.Response;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 import { profileAPI } from '@/lib/api'
-import {ProfileContextType, ProfileData} from "@/type/profile";
+import { ProfileContextType, ProfileData } from "@/types/profile"
 
 const initialProfileData: ProfileData = {
     firstName: '',
@@ -85,7 +85,6 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
 
                 if (response.data) {
                     console.log('Profile saved successfully:', response.data)
-                    // Redirect to profile page on success
                     window.location.href = '/profile'
                 }
             }

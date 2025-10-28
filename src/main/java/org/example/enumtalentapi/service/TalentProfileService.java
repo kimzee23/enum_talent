@@ -1,8 +1,8 @@
 package org.example.enumtalentapi.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.enumtalentapi.dto.TalentProfileRequest;
-import org.example.enumtalentapi.dto.TalentProfileResponse;
+import org.example.enumtalentapi.dto.Request.TalentProfileRequest;
+import org.example.enumtalentapi.dto.Response.TalentProfileResponse;
 import org.example.enumtalentapi.entity.TalentProfile;
 import org.example.enumtalentapi.entity.User;
 import org.example.enumtalentapi.exception.CustomException;

@@ -2,7 +2,7 @@
 
 
 
-import {useProfile} from "@/context/ProfileContext";
+import {useProfile} from "@/contexts/ProfileContext";
 
 export default function ProfileHeader() {
     const { profileData } = useProfile()

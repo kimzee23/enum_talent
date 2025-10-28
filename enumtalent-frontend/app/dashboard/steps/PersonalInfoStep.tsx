@@ -1,6 +1,6 @@
 'use client'
 
-import { useProfile } from '@/context/ProfileContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 export default function PersonalInfoStep() {
     const { profileData, updateProfileData, nextStep } = useProfile()
@@ -8,6 +8,11 @@ export default function PersonalInfoStep() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         nextStep()
+    }
+
+    // Safe value getter to handle null values
+    const getSafeValue = (value: string | null | undefined): string => {
+        return value || ''
     }
 
     return (
@@ -22,9 +27,9 @@ export default function PersonalInfoStep() {
                     <input
                         type="text"
                         id="firstName"
-                        value={profileData.firstName}
+                        value={getSafeValue(profileData.firstName)}
                         onChange={(e) => updateProfileData({ firstName: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                         required
                     />
                 </div>
@@ -36,9 +41,9 @@ export default function PersonalInfoStep() {
                     <input
                         type="text"
                         id="lastName"
-                        value={profileData.lastName}
+                        value={getSafeValue(profileData.lastName)}
                         onChange={(e) => updateProfileData({ lastName: e.target.value })}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                         required
                     />
                 </div>
@@ -51,9 +56,9 @@ export default function PersonalInfoStep() {
                 <input
                     type="tel"
                     id="phone"
-                    value={profileData.phone}
+                    value={getSafeValue(profileData.phone)}
                     onChange={(e) => updateProfileData({ phone: e.target.value })}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     required
                 />
             </div>
@@ -65,9 +70,9 @@ export default function PersonalInfoStep() {
                 <input
                     type="text"
                     id="location"
-                    value={profileData.location}
+                    value={getSafeValue(profileData.location)}
                     onChange={(e) => updateProfileData({ location: e.target.value })}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     required
                 />
             </div>
@@ -79,9 +84,9 @@ export default function PersonalInfoStep() {
                 <textarea
                     id="bio"
                     rows={4}
-                    value={profileData.bio}
+                    value={getSafeValue(profileData.bio)}
                     onChange={(e) => updateProfileData({ bio: e.target.value })}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500"
                     required
                 />
             </div>

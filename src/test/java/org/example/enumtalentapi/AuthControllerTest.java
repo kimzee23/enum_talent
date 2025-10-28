@@ -2,8 +2,8 @@ package org.example.enumtalentapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.enumtalentapi.controller.AuthController;
-import org.example.enumtalentapi.dto.LoginRequest;
-import org.example.enumtalentapi.dto.SignupRequest;
+import org.example.enumtalentapi.dto.Request.LoginRequest;
+import org.example.enumtalentapi.dto.Request.SignupRequest;
 import org.example.enumtalentapi.exception.CustomException;
 import org.example.enumtalentapi.service.AuthServiceImpl;
 import org.junit.jupiter.api.BeforeEach;

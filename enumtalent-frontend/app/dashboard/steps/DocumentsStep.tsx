@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useProfile } from '@/context/ProfileContext'
+import { useProfile } from '@/contexts/ProfileContext'
 
 export default function DocumentsStep() {
     const { profileData, updateProfileData, nextStep, prevStep } = useProfile()
@@ -15,10 +15,10 @@ export default function DocumentsStep() {
     const handleFileUpload = async (file: File, type: 'resume' | 'transcript') => {
         setIsUploading(true)
         try {
-            // Simulate file upload
+
             await new Promise(resolve => setTimeout(resolve, 2000))
 
-            // In a real app, you would upload to cloud storage and get the URL
+            // In a real app, is meant to upload to cloud storage and get the URL
             const fakeUrl = `https://example.com/${type}s/${file.name}`
 
             if (type === 'resume') {
@@ -53,7 +53,6 @@ export default function DocumentsStep() {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <h2 className="text-xl font-semibold text-gray-900">Documents & Files</h2>
 
-            {/* Resume Upload */}
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                 <div className="flex flex-col items-center">
                     <svg className="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,7 +97,7 @@ export default function DocumentsStep() {
                 </div>
             </div>
 
-            {/* Transcript Upload (Optional) */}
+
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                 <div className="flex flex-col items-center">
                     <svg className="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,7 +142,7 @@ export default function DocumentsStep() {
                 </div>
             </div>
 
-            {/* Statement of Purpose */}
+
             <div>
                 <label htmlFor="statementOfPurpose" className="block text-sm font-medium text-gray-700">
                     Statement of Purpose/Cover Letter

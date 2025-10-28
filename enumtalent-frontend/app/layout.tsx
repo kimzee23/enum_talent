@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Link from "next/link";
-import { AuthProvider } from '@/context/AuthContext'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { JobsProvider } from '@/contexts/JobsContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,9 +20,13 @@ export default function RootLayout({
         <html lang="en">
         <body className={inter.className}>
         <AuthProvider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
+            <JobsProvider>
+                <div className="min-h-screen bg-gray-50">
+                    <Navbar />
+                    <main>{children}</main>
+                    <Footer />
+                </div>
+            </JobsProvider>
         </AuthProvider>
         </body>
         </html>
@@ -35,36 +39,39 @@ function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center space-x-3 group">
+                    <a href="/" className="flex items-center space-x-3 group">
                         <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
                             <span className="text-white font-bold text-sm">E</span>
                         </div>
                         <span className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-              Enum Talent
-            </span>
-                    </Link>
+                            Enum Talent
+                        </span>
+                    </a>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link href="/features" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                        <a href="/features" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                             Features
-                        </Link>
-                        <Link href="/pricing" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                        </a>
+                        <a href="/pricing" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                             Pricing
-                        </Link>
-                        <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                        </a>
+                        <a href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                             About
-                        </Link>
+                        </a>
+                        <a href="/jobs" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                            Browse Jobs
+                        </a>
                         <div className="flex items-center space-x-4">
-                            <Link href="/login" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+                            <a href="/login" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
                                 Login
-                            </Link>
-                            <Link
+                            </a>
+                            <a
                                 href="/signup"
                                 className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-6 py-2 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 transform hover:-translate-y-0.5"
                             >
                                 Sign Up Free
-                            </Link>
+                            </a>
                         </div>
                     </div>
 
@@ -102,18 +109,19 @@ function Footer() {
                     <div>
                         <h3 className="font-semibold mb-4">Product</h3>
                         <ul className="space-y-2 text-gray-400">
-                            <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
-                            <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
-                            <li><Link href="/case-studies" className="hover:text-white transition-colors">Case Studies</Link></li>
+                            <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
+                            <li><a href="/pricing" className="hover:text-white transition-colors">Pricing</a></li>
+                            <li><a href="/case-studies" className="hover:text-white transition-colors">Case Studies</a></li>
+                            <li><a href="/jobs" className="hover:text-white transition-colors">Browse Jobs</a></li>
                         </ul>
                     </div>
 
                     <div>
                         <h3 className="font-semibold mb-4">Company</h3>
                         <ul className="space-y-2 text-gray-400">
-                            <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
-                            <li><Link href="/careers" className="hover:text-white transition-colors">Careers</Link></li>
-                            <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                            <li><a href="/about" className="hover:text-white transition-colors">About</a></li>
+                            <li><a href="/careers" className="hover:text-white transition-colors">Careers</a></li>
+                            <li><a href="/contact" className="hover:text-white transition-colors">Contact</a></li>
                         </ul>
                     </div>
                 </div>

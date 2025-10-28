@@ -7,7 +7,7 @@ export default function LoginPage() {
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="flex justify-center">
                     <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg">
-                        <span className="text-white font-bold text-2xl">EMUN</span>
+                        <span className="text-white font-bold text-2xl">ENUM</span>
                     </div>
                 </div>
 

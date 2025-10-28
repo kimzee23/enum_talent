@@ -2,9 +2,9 @@ package org.example.enumtalentapi.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.enumtalentapi.dto.ApiResponse;
-import org.example.enumtalentapi.dto.LoginRequest;
-import org.example.enumtalentapi.dto.SignupRequest;
+import org.example.enumtalentapi.dto.Response.ApiResponse;
+import org.example.enumtalentapi.dto.Request.LoginRequest;
+import org.example.enumtalentapi.dto.Request.SignupRequest;
 import org.example.enumtalentapi.exception.CustomException;
 import org.example.enumtalentapi.service.AuthServiceImpl;
 import org.springframework.http.HttpStatus;
