@@ -2,7 +2,7 @@
 
 
 
-import {useProfile} from "@/lib/context/ProfileContext";
+import {useProfile} from "@/context/ProfileContext";
 
 const steps = [
     'Personal Info',

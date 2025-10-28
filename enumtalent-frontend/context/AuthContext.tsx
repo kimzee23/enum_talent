@@ -1,8 +1,10 @@
 'use client';
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { authAPI } from '@/lib/api';
+import {AuthContextType, AuthResponse, User} from "@/type/auth";
 
-const AuthContext = createContext();
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
@@ -12,8 +14,12 @@ export const useAuth = () => {
     return context;
 };
 
-export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+interface AuthProviderProps {
+    children: ReactNode;
+}
+
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -28,11 +34,15 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const signup = async (email, password) => {
+    const signup = async (email: string, password: string): Promise<AuthResponse> => {
         try {
+            console.log('Sending signup request for:', email);
             const response = await authAPI.signup({ email, password });
+            console.log('Signup response:', response.data);
             return { success: true, data: response.data };
-        } catch (error) {
+        } catch (error: any) {
+            console.error('Signup error details:', error);
+            console.error('Error response:', error.response);
             return {
                 success: false,
                 error: error.response?.data?.message || 'Signup failed'
@@ -40,7 +50,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = async (email, password) => {
+    const login = async (email: string, password: string): Promise<AuthResponse> => {
         try {
             const response = await authAPI.login({ email, password });
             const message = response.data.message;
@@ -56,7 +66,7 @@ export const AuthProvider = ({ children }) => {
             }
 
             return { success: true, data: response.data };
-        } catch (error) {
+        } catch (error: any) {
             return {
                 success: false,
                 error: error.response?.data?.message || 'Login failed'
@@ -64,7 +74,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const logout = async () => {
+    const logout = async (): Promise<void> => {
         try {
             if (user?.userId) {
                 await authAPI.logout(user.userId);
@@ -72,14 +82,13 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error('Logout error:', error);
         } finally {
-            // Clear storage
             localStorage.removeItem('userId');
             localStorage.removeItem('authToken');
             setUser(null);
         }
     };
 
-    const value = {
+    const value: AuthContextType = {
         user,
         signup,
         login,

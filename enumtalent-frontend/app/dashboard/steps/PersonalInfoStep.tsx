@@ -1,6 +1,6 @@
 'use client'
 
-import { useProfile } from '@/lib/context/ProfileContext'
+import { useProfile } from '@/context/ProfileContext'
 
 export default function PersonalInfoStep() {
     const { profileData, updateProfileData, nextStep } = useProfile()

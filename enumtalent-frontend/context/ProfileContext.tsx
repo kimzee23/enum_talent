@@ -1,8 +1,8 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from 'react'
-import {ProfileContextType, ProfileData} from "@/lib/public/profile";
-
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
+import { profileAPI } from '@/lib/api'
+import {ProfileContextType, ProfileData} from "@/type/profile";
 
 const initialProfileData: ProfileData = {
     firstName: '',
@@ -34,6 +34,31 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     const [profileData, setProfileData] = useState<ProfileData>(initialProfileData)
     const [currentStep, setCurrentStep] = useState(1)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+
+    // Load profile data on component mount
+    useEffect(() => {
+        loadProfileData()
+    }, [])
+
+    const loadProfileData = async () => {
+        try {
+            setIsLoading(true)
+            if (typeof window !== 'undefined') {
+                const userId = localStorage.getItem('userId')
+                if (userId) {
+                    const response = await profileAPI.getProfile(userId)
+                    if (response.data) {
+                        setProfileData(response.data)
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error loading profile:', error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
 
     const updateProfileData = (data: Partial<ProfileData>) => {
         setProfileData(prev => ({ ...prev, ...data }))
@@ -50,25 +75,23 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     const submitProfile = async () => {
         setIsSubmitting(true)
         try {
-            // API call to save profile
-            const response = await fetch('/api/profile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(profileData),
-            })
+            if (typeof window !== 'undefined') {
+                const userId = localStorage.getItem('userId')
+                if (!userId) {
+                    throw new Error('User ID not found')
+                }
 
-            if (!response.ok) {
-                throw new Error('Failed to save profile')
+                const response = await profileAPI.createOrUpdateProfile(userId, profileData)
+
+                if (response.data) {
+                    console.log('Profile saved successfully:', response.data)
+                    // Redirect to profile page on success
+                    window.location.href = '/profile'
+                }
             }
-
-            const result = await response.json()
-            console.log('Profile saved:', result)
-            // You can add success notification or redirect here
         } catch (error) {
             console.error('Error saving profile:', error)
-            // You can add error notification here
+            throw error
         } finally {
             setIsSubmitting(false)
         }

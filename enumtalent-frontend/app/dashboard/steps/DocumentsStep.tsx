@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useProfile } from '@/lib/context/ProfileContext'
+import { useProfile } from '@/context/ProfileContext'
 
 export default function DocumentsStep() {
     const { profileData, updateProfileData, nextStep, prevStep } = useProfile()

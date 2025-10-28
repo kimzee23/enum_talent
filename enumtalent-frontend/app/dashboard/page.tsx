@@ -1,10 +1,10 @@
 'use client'
 
-import { useProfile } from '@/lib/context/ProfileContext'
+import { useProfile } from '@/context/ProfileContext'
 
 
-import PreferencesStep from '@/components/dashboard/steps/PreferencesStep'
-import ProgressBar from '@/components/dashboard/ProgressBar'
+import PreferencesStep from '@/app/dashboard/steps/PreferencesStep'
+import ProgressBar from '@/app/dashboard/ProgressBar'
 import PersonalInfoStep from "@/app/dashboard/steps/PersonalInfoStep";
 import ProfessionalInfoStep from "@/app/dashboard/steps/ProfessionalInfoStep";
 import EducationStep from "@/app/dashboard/steps/EducationStep";

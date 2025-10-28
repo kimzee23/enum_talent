@@ -1,4 +1,4 @@
-import {ProfileProvider} from "@/lib/context/ProfileContext";
+import {ProfileProvider} from "@/context/ProfileContext";
 
 
 export default function DashboardLayout({

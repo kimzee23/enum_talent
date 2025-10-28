@@ -1,11 +1,9 @@
 'use client'
-
-
 import ProfileHeader from '@/components/profile/ProfileHeader'
 import ProfileStats from '@/components/profile/ProfileStats'
 import ProfileForm from '@/components/profile/ProfileForm'
 import ProfileCompletion from '@/components/profile/ProfileCompletion'
-import {ProfileProvider} from "@/lib/context/ProfileContext";
+import {ProfileProvider} from "@/context/ProfileContext";
 
 export default function ProfilePage() {
     return (
@@ -13,7 +11,7 @@ export default function ProfilePage() {
             <div className="min-h-screen bg-gray-50 py-8">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Main content */}
+
                         <div className="lg:col-span-2 space-y-6">
                             <ProfileHeader />
                             <ProfileStats />
