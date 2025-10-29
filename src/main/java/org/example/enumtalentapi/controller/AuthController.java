@@ -14,105 +14,70 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Slf4j
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthServiceImpl authService;
-
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> signup(@RequestBody SignupRequest request) {
-        try {
-            log.info("Signup endpoint called for email: {}", request.getEmail());
-            String message = authService.signup(request);
-            return ResponseEntity.ok(new ApiResponse("success", message));
-        } catch (CustomException e) {
-            log.error("Custom exception during signup: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse("error", e.getMessage()));
-        } catch (Exception e) {
-            log.error("Unexpected error during signup: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("error", "Unexpected error: " + e.getMessage()));
-        }
+        return handleRequest(
+                () -> {
+                    log.info("Signup request for email: {}", request.getEmail());
+                    return authService.signup(request);
+                },
+                "Signup successful"
+        );
     }
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        try {
-            String message = authService.login(request);
-            return ResponseEntity.ok(new ApiResponse("success", message));
-        } catch (CustomException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("error", "Unexpected error: " + e.getMessage()));
-        }
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest request) {
+        return handleRequest(() -> authService.login(request), "Login successful");
     }
-
     @PostMapping("/verify-email")
-    public ResponseEntity<?> verifyEmail(@RequestBody Map<String, String> body) {
-        try {
-            String token = body.get("token");
-            String message = authService.verifyEmail(token);
-            return ResponseEntity.ok(new ApiResponse("success", message));
-        } catch (CustomException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("error", "Unexpected error: " + e.getMessage()));
-        }
+    public ResponseEntity<ApiResponse> verifyEmail(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        return handleRequest(() -> authService.verifyEmail(token), "Email verified successfully");
     }
-
 
     @GetMapping("/verify")
-    public ResponseEntity<?> verifyEmail(@RequestParam("token") String token) {
-        try {
-            String message = authService.verifyEmail(token);
-            return ResponseEntity.ok(new ApiResponse("success", message));
-        } catch (CustomException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponse("error", "Unexpected error: " + e.getMessage()));
-        }
+    public ResponseEntity<ApiResponse> verifyEmail(@RequestParam("token") String token) {
+        return handleRequest(() -> authService.verifyEmail(token), "Email verified successfully");
     }
+
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse> logout(
             @RequestParam String userId,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
-        try {
-            log.info("Logout requested for user: {}", userId);
+        return handleRequest(
+                () -> {
+                    log.info("Logout request for user: {}", userId);return authService.logout(userId);}, "Logout successful");
+    }
 
-            String message = authService.logout(userId);
-            return ResponseEntity.ok(new ApiResponse("success", message));
+    @PostMapping("/logout-token")
+    public ResponseEntity<ApiResponse> logoutWithToken(@RequestHeader("Authorization") String authHeader) {
+        return handleRequest(
+                () -> {
+                    String token = authHeader.replace("Bearer ", "").trim();return authService.logoutWithToken(token);}, "Logout successful");
+    }
+    private ResponseEntity<ApiResponse> handleRequest(ServiceAction action, String successMessage) {
+        try {
+            String result = action.execute();
+            return ResponseEntity.ok(new ApiResponse("success", result != null ? result : successMessage));
         } catch (CustomException e) {
-            log.error("Custom exception during logout: {}", e.getMessage());
+            log.warn("Business error: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse("error", e.getMessage()));
         } catch (Exception e) {
-            log.error("Unexpected error during logout: ", e);
+            log.error("Unexpected error: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse("error", "Unexpected error: " + e.getMessage()));
         }
     }
 
-    @PostMapping("/logout-token")
-    public ResponseEntity<ApiResponse> logoutWithToken(
-            @RequestHeader("Authorization") String authHeader) {
-        try {
-            String token = authHeader.replace("Bearer ", "");
-            String message = authService.logoutWithToken(token);
-            return ResponseEntity.ok(new ApiResponse("success", message));
-        } catch (CustomException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse("error", e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(new ApiResponse("error", "Unexpected error: " + e.getMessage()));
-        }
+    @FunctionalInterface
+    private interface ServiceAction {
+        String execute() throws Exception;
     }
 }

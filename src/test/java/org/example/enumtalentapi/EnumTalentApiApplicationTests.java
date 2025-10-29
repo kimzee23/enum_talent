@@ -46,7 +46,7 @@ class TalentProfileControllerTest {
 	}
 
 	@Test
-	void getMyProfile_Success() throws Exception {
+	void getMyProfile_Successfully_Test() throws Exception {
 		TalentProfileResponse response = new TalentProfileResponse();
 		response.setEmail("test@example.com");
 		response.setVerified(true);
@@ -68,11 +68,10 @@ class TalentProfileControllerTest {
 
 	@Test
 	void getMyProfile_UserNotFound() throws Exception {
-		// Given
+
 		when(profileService.getMyProfile(userId))
 				.thenThrow(new CustomException("USER_NOT_FOUND"));
 
-		// When & Then
 		mockMvc.perform(get("/api/profile/talent/me")
 						.param("userId", userId))
 				.andExpect(status().isBadRequest())
