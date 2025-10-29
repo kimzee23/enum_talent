@@ -314,9 +314,9 @@ sudo lsof -t -i tcp:8081 | xargs kill -9
 
 ##  Contact
 
-- **Developer**: [Your Name]
-- **Email**: [your.email@example.com]
-- **Project Link**: [https://github.com/yourusername/enumtalent-api](https://github.com/yourusername/enumtalent-api)
+- **Developer**: Kolajo
+- **Email**: gazartechnology@gmail.com
+- **Project Link**: [https://github.com/kimzee23/enum_talent](https://github.com/kimzee23/enum_talent)
 
 ---
 
@@ -329,3 +329,4 @@ sudo lsof -t -i tcp:8081 | xargs kill -9
 **Built with using Spring Boot & MongoDB**
 
 </div>
+
