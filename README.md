@@ -44,7 +44,7 @@ A Spring Boot REST API for talent management and recruitment platform with authe
 ## Tech Stack
 
 ### Backend
-- **Java 17**
+- **Java 24**
 - **Spring Boot 3.2.x**
 - **Spring Security** with OAuth2
 - **Spring Data MongoDB**
@@ -329,4 +329,5 @@ sudo lsof -t -i tcp:8081 | xargs kill -9
 **Built with using Spring Boot & MongoDB**
 
 </div>
+
 
