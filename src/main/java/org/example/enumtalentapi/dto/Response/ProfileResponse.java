@@ -11,5 +11,4 @@ public class ProfileResponse {
     private int completeness;
     private List<String> missingFields;
 
-    // getters/setters
 }

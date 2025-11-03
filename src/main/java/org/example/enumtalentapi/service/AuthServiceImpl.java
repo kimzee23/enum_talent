@@ -79,17 +79,14 @@ public class AuthServiceImpl implements AuthService {
             throw new CustomException("INVALID_CREDENTIALS");
         }
 
-        // Update last login timestamp
         user.setLastLogin(LocalDateTime.now());
         userRepo.save(user);
 
-        // Generate JWT token
         String jwtToken = jwtService.generateToken(user.getId());
 
-        // Return structured response with JWT token
-        return "LOGIN_SUCCESS&token=" + jwtToken + "&userId=" + user.getId();
-    }
 
+        return "{\"token\":\"" + jwtToken + "\",\"userId\":\"" + user.getId() + "\",\"email\":\"" + user.getEmail() + "\"}";
+    }
     @Override
     public String verifyEmail(String tokenStr) {
         VerificationToken token = tokenRepo.findByToken(tokenStr);
